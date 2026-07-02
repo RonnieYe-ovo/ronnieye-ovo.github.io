@@ -1,1 +1,204 @@
-Hello, 我是 XXX，这是我的第一个网页
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ronnie 的个人主页</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #dbeafe;
+      background: #07111f;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 80px 20px;
+      text-align: center;
+      color: white;
+      background:
+        radial-gradient(circle at top left, rgba(0, 229, 255, 0.35), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.35), transparent 34%),
+        linear-gradient(135deg, #08111f, #111827 55%, #1e1b4b);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.45);
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 42px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
+    }
+
+    header p {
+      margin: 0;
+      font-size: 18px;
+      color: #a5f3fc;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      margin-bottom: 24px;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 0 26px rgba(14, 165, 233, 0.14);
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #67e8f9;
+      border-left: 4px solid #38bdf8;
+      padding-left: 10px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      border-radius: 14px;
+      box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
+    }
+
+    .project-card h3 {
+      margin-top: 0;
+      color: #f8fafc;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      color: white;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.45);
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: linear-gradient(135deg, #1d4ed8, #0891b2);
+      text-decoration: none;
+    }
+
+    #message {
+      margin-top: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #67e8f9;
+    }
+
+    a {
+      color: #67e8f9;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ronnie 的个人主页</h1>
+    <p>欢迎来到我的第一个网页</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>关于我</h2>
+      <p>你好，我是 Ronnie。我是在星河湾就读高一的学生。我正在学习制作网页，希望能做出更多有趣的作品。</p>
+    </section>
+
+    <section>
+      <h2>兴趣爱好</h2>
+      <ul>
+        <li>编程</li>
+        <li>阅读</li>
+        <li>探索新技术</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>我的项目</h2>
+      <div class="project-list">
+        <div class="project-card">
+          <h3>学习打卡网站</h3>
+          <p>记录每天的学习内容和完成情况，帮助自己养成坚持学习的习惯。</p>
+          <a class="button" href="#">了解更多</a>
+        </div>
+
+        <div class="project-card">
+          <h3>个人作品展示页</h3>
+          <p>展示自己做过的小网页、小程序和创意作品，让别人更了解我。</p>
+          <a class="button" href="#">查看想法</a>
+        </div>
+
+        <div class="project-card">
+          <h3>兴趣笔记本</h3>
+          <p>整理我喜欢的知识、书籍和技术内容，做成一个简洁的在线笔记。</p>
+          <a class="button" href="#">开始探索</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>今日鼓励</h2>
+      <p>点击按钮，随机获得一句鼓励语。</p>
+      <button class="button" onclick="showMessage()">给我一句鼓励</button>
+      <p id="message">准备好开始努力吧！</p>
+    </section>
+
+    <section>
+      <h2>联系方式</h2>
+      <p>邮箱：<a href="mailto:ronnieyezhuorong@icloud.com">ronnieyezhuorong@icloud.com</a></p>
+      <p>GitHub：<a href="https://github.com/RonnieYe-ovo">RonnieYe-ovo</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Ronnie</p>
+  </footer>
+
+  <script>
+    function showMessage() {
+      var messages = [
+        "今天也要相信自己！",
+        "每一次练习都会让你更进步。",
+        "慢慢来，你正在变得更厉害。",
+        "坚持下去，未来的你会感谢现在的努力。",
+        "勇敢尝试，就是成功的开始。"
+      ];
+
+      var randomIndex = Math.floor(Math.random() * messages.length);
+      document.getElementById("message").textContent = messages[randomIndex];
+    }
+  </script>
+</body>
+</html>
