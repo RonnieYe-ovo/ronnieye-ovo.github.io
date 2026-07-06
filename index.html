@@ -3,201 +3,606 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ronnie 的个人主页</title>
+  <title>学术写作与格式转换助手</title>
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      color: #dbeafe;
-      background: #07111f;
-      line-height: 1.6;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color: #172033;
+      background:
+        radial-gradient(circle at top left, rgba(89, 124, 255, 0.2), transparent 34%),
+        linear-gradient(135deg, #eef4ff 0%, #f7f2ff 45%, #fff8ed 100%);
+      min-height: 100vh;
     }
 
     header {
-      padding: 80px 20px;
+      padding: 54px 20px 30px;
       text-align: center;
-      color: white;
-      background:
-        radial-gradient(circle at top left, rgba(0, 229, 255, 0.35), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.35), transparent 34%),
-        linear-gradient(135deg, #08111f, #111827 55%, #1e1b4b);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.45);
     }
 
     header h1 {
-      margin: 0 0 10px;
-      font-size: 42px;
-      letter-spacing: 2px;
-      text-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
+      margin: 0 0 12px;
+      font-size: clamp(32px, 6vw, 56px);
+      letter-spacing: -1.2px;
     }
 
     header p {
-      margin: 0;
+      margin: 0 auto;
+      max-width: 820px;
+      color: #536174;
       font-size: 18px;
-      color: #a5f3fc;
+      line-height: 1.75;
     }
 
     main {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    section {
-      margin-bottom: 24px;
-      padding: 24px;
-      background: rgba(15, 23, 42, 0.86);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 16px;
-      box-shadow: 0 0 26px rgba(14, 165, 233, 0.14);
-      backdrop-filter: blur(10px);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #67e8f9;
-      border-left: 4px solid #38bdf8;
-      padding-left: 10px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .project-list {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto 48px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
-    .project-card {
-      padding: 20px;
-      background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(125, 211, 252, 0.28);
-      border-radius: 14px;
-      box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
+    .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(130, 150, 190, 0.24);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 60px rgba(71, 87, 120, 0.13);
+      backdrop-filter: blur(14px);
     }
 
-    .project-card h3 {
-      margin-top: 0;
-      color: #f8fafc;
+    .tool-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
+    .tool-tab {
+      border: 0;
+      border-radius: 18px;
+      padding: 17px;
+      color: #263246;
+      background: #f2f5fb;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s ease;
+    }
+
+    .tool-tab strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .tool-tab span {
+      color: #647084;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .tool-tab.active {
       color: white;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      border: none;
+      background: linear-gradient(135deg, #3157e8, #7f4df2);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(65, 80, 210, 0.25);
+    }
+
+    .tool-tab.active span { color: #edf0ff; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    textarea, input, select {
+      width: 100%;
+      border: 1px solid #d8deec;
+      border-radius: 14px;
+      padding: 13px 14px;
+      color: #172033;
+      background: #fbfcff;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea:focus, input:focus, select:focus {
+      border-color: #5d74ee;
+      box-shadow: 0 0 0 4px rgba(93, 116, 238, 0.12);
+    }
+
+    textarea {
+      min-height: 270px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .primary, .secondary {
+      border: 0;
       border-radius: 999px;
-      text-decoration: none;
-      box-shadow: 0 0 16px rgba(6, 182, 212, 0.45);
+      padding: 13px 20px;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .button:hover {
-      background: linear-gradient(135deg, #1d4ed8, #0891b2);
-      text-decoration: none;
+    .primary {
+      color: white;
+      background: #172033;
     }
 
-    #message {
-      margin-top: 16px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #67e8f9;
+    .secondary {
+      color: #243044;
+      background: #e9edf7;
     }
 
-    a {
-      color: #67e8f9;
-      text-decoration: none;
+    .output-box {
+      min-height: 342px;
+      white-space: pre-wrap;
+      line-height: 1.75;
+      color: #253047;
+      background: #fbfcff;
+      border: 1px dashed #cbd4e8;
+      border-radius: 18px;
+      padding: 18px;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
+
+    .support-grid h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    .support-grid p, .support-grid li {
+      color: #5f6c80;
+      line-height: 1.7;
+    }
+
+    .support-grid ul {
+      padding-left: 20px;
+      margin-bottom: 0;
+    }
+
+    .example-box {
+      background: #f7f9fe;
+      border-radius: 16px;
+      padding: 16px;
+      color: #435066;
+      line-height: 1.7;
+    }
+
+    .hint {
+      margin-top: 12px;
+      color: #6b7588;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .hidden { display: none; }
 
     footer {
-      padding: 20px;
+      padding: 24px;
+      color: #687488;
       text-align: center;
-      color: #94a3b8;
+    }
+
+    @media (max-width: 900px) {
+      .tool-tabs { grid-template-columns: repeat(2, 1fr); }
+      .workspace, .support-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .tool-tabs, .field-grid { grid-template-columns: 1fr; }
+      header { padding-top: 34px; }
+      .panel { padding: 18px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Ronnie 的个人主页</h1>
-    <p>欢迎来到我的第一个网页</p>
+    <h1>学术写作与格式转换助手</h1>
+    <p>一个实用的写作网页工具，支持文章润色、改写、语法检查、总结、扩写、缩短、论文大纲、标题生成，以及 MLA、APA、Chicago、Harvard、IEEE 参考文献格式。</p>
   </header>
 
   <main>
-    <section>
-      <h2>关于我</h2>
-      <p>你好，我是 Ronnie。我是在星河湾就读高一的学生。我正在学习制作网页，希望能做出更多有趣的作品。</p>
+    <section class="panel tool-tabs" aria-label="功能选择">
+      <button class="tool-tab active" data-tool="polish"><strong>润色文章</strong><span>让表达更自然、更正式。</span></button>
+      <button class="tool-tab" data-tool="rewrite"><strong>改写句子</strong><span>换一种说法，减少重复。</span></button>
+      <button class="tool-tab" data-tool="grammar"><strong>检查语法</strong><span>找出常见语言问题。</span></button>
+      <button class="tool-tab" data-tool="summary"><strong>总结文章</strong><span>提取主要观点。</span></button>
+      <button class="tool-tab" data-tool="expand"><strong>扩写文章</strong><span>补充解释和细节。</span></button>
+      <button class="tool-tab" data-tool="shorten"><strong>缩短文章</strong><span>保留重点，删去冗余。</span></button>
+      <button class="tool-tab" data-tool="outline"><strong>标题与大纲</strong><span>生成论文标题和结构。</span></button>
+      <button class="tool-tab" data-tool="citation"><strong>参考文献格式</strong><span>生成 MLA/APA 等引用。</span></button>
     </section>
 
-    <section>
-      <h2>兴趣爱好</h2>
-      <ul>
-        <li>编程</li>
-        <li>阅读</li>
-        <li>探索新技术</li>
-      </ul>
-    </section>
+    <section class="workspace">
+      <div class="panel">
+        <div id="textInputArea">
+          <label for="sourceText">输入文章、段落或主题</label>
+          <textarea id="sourceText" placeholder="例如：This essay talk about climate change and why it is bad."></textarea>
 
-    <section>
-      <h2>我的项目</h2>
-      <div class="project-list">
-        <div class="project-card">
-          <h3>学习打卡网站</h3>
-          <p>记录每天的学习内容和完成情况，帮助自己养成坚持学习的习惯。</p>
-          <a class="button" href="#">了解更多</a>
+          <div class="field-grid">
+            <div>
+              <label for="tone">写作风格</label>
+              <select id="tone">
+                <option value="academic">学术正式</option>
+                <option value="clear">清晰简洁</option>
+                <option value="natural">自然流畅</option>
+                <option value="professional">专业客观</option>
+              </select>
+            </div>
+            <div>
+              <label for="language">语言</label>
+              <select id="language">
+                <option value="english">英文</option>
+                <option value="chinese">中文</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="project-card">
-          <h3>个人作品展示页</h3>
-          <p>展示自己做过的小网页、小程序和创意作品，让别人更了解我。</p>
-          <a class="button" href="#">查看想法</a>
+        <div id="citationForm" class="hidden">
+          <div class="field-grid">
+            <div>
+              <label for="format">引用格式</label>
+              <select id="format">
+                <option value="mla">MLA</option>
+                <option value="apa">APA</option>
+                <option value="chicago">Chicago</option>
+                <option value="harvard">Harvard</option>
+                <option value="ieee">IEEE</option>
+              </select>
+            </div>
+            <div>
+              <label for="sourceType">资料类型</label>
+              <select id="sourceType">
+                <option value="webpage">网页</option>
+                <option value="book">书籍</option>
+                <option value="journal">期刊文章</option>
+              </select>
+            </div>
+            <div>
+              <label for="author">作者</label>
+              <input id="author" placeholder="例如：Smith, John">
+            </div>
+            <div>
+              <label for="title">文章/网页/书名</label>
+              <input id="title" placeholder="例如：The Future of Learning">
+            </div>
+            <div>
+              <label for="container">网站/期刊/书籍名称</label>
+              <input id="container" placeholder="例如：Education Today">
+            </div>
+            <div>
+              <label for="publisher">出版社/机构</label>
+              <input id="publisher" placeholder="例如：Oxford Press">
+            </div>
+            <div>
+              <label for="date">发布日期</label>
+              <input id="date" placeholder="例如：6 July 2026">
+            </div>
+            <div>
+              <label for="accessDate">访问日期</label>
+              <input id="accessDate" placeholder="例如：6 July 2026">
+            </div>
+            <div>
+              <label for="pages">页码</label>
+              <input id="pages" placeholder="例如：25-39">
+            </div>
+            <div>
+              <label for="doi">DOI</label>
+              <input id="doi" placeholder="例如：10.1000/example">
+            </div>
+            <div class="full">
+              <label for="url">URL</label>
+              <input id="url" placeholder="https://example.com/article">
+            </div>
+          </div>
         </div>
 
-        <div class="project-card">
-          <h3>兴趣笔记本</h3>
-          <p>整理我喜欢的知识、书籍和技术内容，做成一个简洁的在线笔记。</p>
-          <a class="button" href="#">开始探索</a>
+        <div class="actions">
+          <button class="primary" id="generateBtn">生成结果</button>
+          <button class="secondary" id="copyBtn">复制结果</button>
+          <button class="secondary" id="downloadTxtBtn">下载 TXT</button>
+          <button class="secondary" id="downloadDocBtn">下载 Word</button>
+          <button class="secondary" id="clearBtn">清空</button>
         </div>
+        <p class="hint">提示：这是本地静态网页工具，不连接 AI 后端。文本处理为基础规则版，适合快速整理草稿；正式论文请再人工检查。</p>
+      </div>
+
+      <div class="panel">
+        <label for="result">输出结果</label>
+        <div class="output-box" id="result">请选择一个功能，然后输入内容。</div>
       </div>
     </section>
 
-    <section>
-      <h2>今日鼓励</h2>
-      <p>点击按钮，随机获得一句鼓励语。</p>
-      <button class="button" onclick="showMessage()">给我一句鼓励</button>
-      <p id="message">准备好开始努力吧！</p>
-    </section>
+    <section class="support-grid">
+      <div class="panel">
+        <h2>使用示例</h2>
+        <div class="example-box">
+          原文：This essay talk about climate change and why it is bad.<br>
+          润色：This essay discusses climate change and explains why it is a serious global issue.<br><br>
+          MLA 示例：Smith, John. "The Future of Learning." Education Today, 6 July 2026, https://example.com. Accessed 6 July 2026.
+        </div>
+      </div>
 
-    <section>
-      <h2>联系方式</h2>
-      <p>邮箱：<a href="mailto:ronnieyezhuorong@icloud.com">ronnieyezhuorong@icloud.com</a></p>
-      <p>GitHub：<a href="https://github.com/RonnieYe-ovo">RonnieYe-ovo</a></p>
+      <div class="panel">
+        <h2>格式说明</h2>
+        <ul>
+          <li>MLA 常用于文学、人文类论文。</li>
+          <li>APA 常用于心理学、教育学和社会科学。</li>
+          <li>Chicago 常用于历史、人文和出版领域。</li>
+          <li>Harvard 常用于多种大学课程。</li>
+          <li>IEEE 常用于工程、计算机和技术论文。</li>
+        </ul>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2026 Ronnie</p>
-  </footer>
+  <footer>持续学习，认真写作，保持进步。</footer>
 
   <script>
-    function showMessage() {
-      var messages = [
-        "今天也要相信自己！",
-        "每一次练习都会让你更进步。",
-        "慢慢来，你正在变得更厉害。",
-        "坚持下去，未来的你会感谢现在的努力。",
-        "勇敢尝试，就是成功的开始。"
+    const tabs = document.querySelectorAll('.tool-tab');
+    const textInputArea = document.getElementById('textInputArea');
+    const citationForm = document.getElementById('citationForm');
+    const result = document.getElementById('result');
+    const sourceText = document.getElementById('sourceText');
+    const tone = document.getElementById('tone');
+    const language = document.getElementById('language');
+    let currentTool = 'polish';
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+        currentTool = tab.dataset.tool;
+        updateVisibleFields();
+      });
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', generateResult);
+    document.getElementById('copyBtn').addEventListener('click', copyResult);
+    document.getElementById('downloadTxtBtn').addEventListener('click', () => downloadResult('txt'));
+    document.getElementById('downloadDocBtn').addEventListener('click', () => downloadResult('doc'));
+    document.getElementById('clearBtn').addEventListener('click', clearAll);
+
+    function updateVisibleFields() {
+      const isCitation = currentTool === 'citation';
+      textInputArea.classList.toggle('hidden', isCitation);
+      citationForm.classList.toggle('hidden', !isCitation);
+      result.textContent = isCitation ? '请填写资料信息，然后点击生成结果。' : '请输入文章、段落或主题，然后点击生成结果。';
+    }
+
+    function generateResult() {
+      if (currentTool === 'citation') {
+        result.textContent = buildCitation();
+        return;
+      }
+
+      const text = sourceText.value.trim();
+      if (!text) {
+        result.textContent = '请先输入内容。';
+        return;
+      }
+
+      const handlers = {
+        polish: polishText,
+        rewrite: rewriteText,
+        grammar: checkGrammar,
+        summary: summarizeText,
+        expand: expandText,
+        shorten: shortenText,
+        outline: createOutline
+      };
+
+      result.textContent = handlers[currentTool](text);
+    }
+
+    function polishText(text) {
+      if (language.value === 'chinese') {
+        return text
+          .replace(/很/g, '较为')
+          .replace(/我觉得/g, '我认为')
+          .replace(/这个文章/g, '本文')
+          .replace(/所以/g, '因此')
+          .replace(/但是/g, '然而') + '\n\n润色说明：已将部分口语表达调整为更正式的表达。';
+      }
+
+      let polished = improveEnglish(text);
+      if (tone.value === 'academic') polished = polished.replace(/\bshows\b/gi, 'demonstrates');
+      if (tone.value === 'professional') polished = polished.replace(/\bimportant\b/gi, 'significant');
+      return polished + '\n\nPolishing note: The text has been adjusted for a clearer and more formal tone.';
+    }
+
+    function rewriteText(text) {
+      if (language.value === 'chinese') {
+        return `改写版本：\n${text.replace(/因为/g, '由于').replace(/帮助/g, '有助于').replace(/越来越/g, '日益')}\n\n说明：已替换部分常见词语，使表达更丰富。`;
+      }
+      return `Rewritten version:\n${improveEnglish(text).replace(/This essay/gi, 'This paper').replace(/people/gi, 'individuals')}\n\nNote: Some wording has been changed while keeping the original meaning.`;
+    }
+
+    function checkGrammar(text) {
+      const issues = [];
+      const checks = [
+        [/\btalk about\b/i, '可以把 "talk about" 改成更正式的 "discusses"。'],
+        [/\ba lot of\b/i, '可以把 "a lot of" 改成 "many" 或 "numerous"。'],
+        [/\bbad\b/i, '学术写作中可以把 "bad" 改成 "serious"、"harmful" 或 "problematic"。'],
+        [/\bI think\b/i, '论文中可以减少 "I think"，改用更客观的表达。'],
+        [/\s{2,}/, '发现多余空格，建议统一为一个空格。']
       ];
 
-      var randomIndex = Math.floor(Math.random() * messages.length);
-      document.getElementById("message").textContent = messages[randomIndex];
+      checks.forEach(([pattern, message]) => {
+        if (pattern.test(text)) issues.push(message);
+      });
+
+      if (language.value === 'chinese' && /我觉得|很|这个文章/.test(text)) {
+        issues.push('中文文本中有较口语的表达，可以改成“我认为”“较为”“本文”。');
+      }
+
+      return issues.length ? `语法/表达建议：\n${issues.map((item, index) => `${index + 1}. ${item}`).join('\n')}` : '暂未发现明显的常见语法或表达问题。';
+    }
+
+    function summarizeText(text) {
+      const sentences = splitSentences(text);
+      const selected = sentences.slice(0, 3).join(language.value === 'chinese' ? '。' : ' ');
+      return `文章总结：\n${selected || text}\n\n关键词：${extractKeywords(text).join('、')}`;
+    }
+
+    function expandText(text) {
+      if (language.value === 'chinese') {
+        return `${text}\n\n扩写：这个观点可以从背景、原因和影响三个方面进一步说明。首先，它与现实生活中的学习、工作或社会变化密切相关。其次，这一问题会影响人们的选择和长期发展。最后，如果能够提出具体例子，文章的说服力会更强。`;
+      }
+      return `${text}\n\nExpanded version: This point can be developed by explaining its background, causes, and broader effects. For example, it may influence how people learn, work, or make decisions in daily life. Adding specific evidence would make the argument clearer and more persuasive.`;
+    }
+
+    function shortenText(text) {
+      const sentences = splitSentences(text);
+      const shortened = sentences.slice(0, Math.max(1, Math.ceil(sentences.length / 2))).join(language.value === 'chinese' ? '。' : ' ');
+      return `缩短版本：\n${shortened || text.slice(0, 180)}\n\n说明：已保留前半部分主要信息，适合继续人工精简。`;
+    }
+
+    function createOutline(text) {
+      const topic = text.length > 80 ? text.slice(0, 80) + '...' : text;
+      if (language.value === 'chinese') {
+        return `推荐标题：关于“${topic}”的分析\n\n论文大纲：\n1. 引言：介绍主题背景和研究意义。\n2. 主体一：解释核心问题或主要观点。\n3. 主体二：提供例子、证据或数据支持。\n4. 主体三：分析影响、争议或解决方法。\n5. 结论：总结观点并提出进一步思考。`;
+      }
+      return `Suggested title: An Analysis of ${topic}\n\nEssay outline:\n1. Introduction: Present the topic and thesis statement.\n2. Body Paragraph 1: Explain the main issue or argument.\n3. Body Paragraph 2: Provide examples, evidence, or data.\n4. Body Paragraph 3: Analyze effects, challenges, or possible solutions.\n5. Conclusion: Summarize the argument and offer a final insight.`;
+    }
+
+    function improveEnglish(text) {
+      return text
+        .replace(/\btalk about\b/gi, 'discusses')
+        .replace(/\ba lot of\b/gi, 'many')
+        .replace(/\bbad\b/gi, 'serious')
+        .replace(/\bgood\b/gi, 'effective')
+        .replace(/\bI think\b/gi, 'This suggests that')
+        .replace(/\bin conclusion\b/gi, 'In conclusion')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function splitSentences(text) {
+      return text.split(/(?<=[.!?。！？])\s*/).map((item) => item.trim()).filter(Boolean);
+    }
+
+    function extractKeywords(text) {
+      const words = text.toLowerCase().match(/[a-zA-Z]{5,}|[\u4e00-\u9fa5]{2,}/g) || [];
+      return [...new Set(words)].slice(0, 6);
+    }
+
+    function buildCitation() {
+      const data = {
+        format: getValue('format'),
+        sourceType: getValue('sourceType'),
+        author: getValue('author') || '作者姓名',
+        title: getValue('title') || '文章标题',
+        container: getValue('container'),
+        publisher: getValue('publisher'),
+        date: getValue('date'),
+        accessDate: getValue('accessDate'),
+        pages: getValue('pages'),
+        doi: getValue('doi'),
+        url: getValue('url')
+      };
+
+      const citation = {
+        mla: formatMla,
+        apa: formatApa,
+        chicago: formatChicago,
+        harvard: formatHarvard,
+        ieee: formatIeee
+      }[data.format](data);
+
+      return `${data.format.toUpperCase()} 参考文献：\n${citation}\n\n文内引用示例：${inTextCitation(data)}`;
+    }
+
+    function formatMla(d) {
+      return compact([`${d.author}.`, `"${d.title}."`, d.container && `${d.container},`, d.publisher && `${d.publisher},`, d.date && `${d.date},`, d.pages && `pp. ${d.pages},`, d.url || d.doi, d.accessDate && `Accessed ${d.accessDate}.`]);
+    }
+
+    function formatApa(d) {
+      return compact([`${d.author}.`, d.date && `(${d.date}).`, `${d.title}.`, d.container && `${d.container}.`, d.publisher && `${d.publisher}.`, d.doi || d.url]);
+    }
+
+    function formatChicago(d) {
+      return compact([`${d.author}.`, `"${d.title}."`, d.container && `${d.container}.`, d.publisher && `${d.publisher},`, d.date && `${d.date}.`, d.pages && `${d.pages}.`, d.doi || d.url]);
+    }
+
+    function formatHarvard(d) {
+      return compact([`${d.author}`, d.date && `(${d.date})`, `'${d.title}'`, d.container && `${d.container},`, d.pages && `pp. ${d.pages}.`, d.doi || d.url]);
+    }
+
+    function formatIeee(d) {
+      return compact([`[1] ${d.author},`, `"${d.title},"`, d.container && `${d.container},`, d.pages && `pp. ${d.pages},`, d.date && `${d.date}.`, d.doi || d.url]);
+    }
+
+    function compact(parts) {
+      return parts.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function inTextCitation(d) {
+      const lastName = d.author.split(',')[0] || d.author.split(' ').pop() || '作者';
+      if (d.format === 'apa' || d.format === 'harvard') return `(${lastName}, ${d.date || '年份'})`;
+      if (d.format === 'ieee') return '[1]';
+      return `(${lastName}${d.pages ? ' ' + d.pages.split('-')[0] : ''})`;
+    }
+
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    async function copyResult() {
+      try {
+        await navigator.clipboard.writeText(result.textContent);
+        result.textContent += '\n\n已复制到剪贴板。';
+      } catch (error) {
+        result.textContent += '\n\n复制失败，请手动选择结果复制。';
+      }
+    }
+
+    function downloadResult(type) {
+      const extension = type === 'doc' ? 'doc' : 'txt';
+      const mime = type === 'doc' ? 'application/msword' : 'text/plain';
+      const blob = new Blob([result.textContent], { type: `${mime};charset=utf-8` });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `writing-result.${extension}`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function clearAll() {
+      document.querySelectorAll('textarea, input').forEach((field) => { field.value = ''; });
+      result.textContent = '内容已清空。';
     }
   </script>
 </body>
